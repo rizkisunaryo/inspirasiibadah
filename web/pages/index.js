@@ -1,6 +1,8 @@
+import {Button, Paper} from 'material-ui'
 import { PureComponent } from 'react'
 import { connect, Provider } from 'react-redux'
 
+import ImportMaterialUI from '../components/ImportMaterialUI'
 import store from '../store'
 import { testAction } from '../actions/testAction'
 
@@ -21,7 +23,10 @@ class CobaComponent extends PureComponent {
 
   render () {
     return (
-      <div>{this.props.theNumber}</div>
+      <Paper>
+        <ImportMaterialUI />
+        <Button>{this.props.theNumber}</Button>
+      </Paper>
     )
   }
 }
