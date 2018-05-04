@@ -4,29 +4,30 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "next build",
     "dev": "node server.js",
     "precommit": "npm test",
+    "start": "next start",
     "test": "standard --fix && jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/icons": "^1.0.0-beta.43",
-    "express": "^4.16.3",
-    "material-ui": "^1.0.0-beta.44",
-    "next": "^5.1.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "repatch": "^1.3.12"
+    "express": "4.16.3",
+    "next": "6.0.0",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
+    "react-redux": "5.0.7",
+    "redux": "4.0.0",
+    "repatch": "1.3.12"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.0.0-beta.42",
     "enzyme": "3.2.0",
     "enzyme-adapter-react-16": "1.1.1",
-    "jest": "^22.4.3",
-    "standard": "^11.0.1"
+    "jest": "22.4.3",
+    "standard": "11.0.1"
   },
   "standard": {
     "globals": [
