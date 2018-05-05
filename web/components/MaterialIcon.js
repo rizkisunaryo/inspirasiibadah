@@ -7,13 +7,16 @@ export default class MaterialIcon extends PureComponent {
     const {
       active: propActive,
       label: propLabel,
+      onClick: propOnClick,
       type: propType
     } = this.props
 
     const color = propActive ? Colors.GREY_50 : Colors.GREY_300
 
     return (
-      <div style={{display: 'flex', flexDirection: 'column', width: 80, alignItems: 'center'}}>
+      <div
+        onClick={propOnClick}
+        style={{display: 'flex', flexDirection: 'column', width: 80, alignItems: 'center'}}>
         <i
           className='material-icons'
           style={{fontSize: 24, color}}>{propType}</i>
