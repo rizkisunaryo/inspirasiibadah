@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    "transform-inline-environment-variables"
+  ],
+  "presets": ["@babel/preset-env", "next/babel"]
+}

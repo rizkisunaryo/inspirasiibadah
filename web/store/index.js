@@ -2,8 +2,8 @@ import Store, { thunk } from 'repatch'
 
 import api from '../api'
 import testRedux from '../store/testRedux'
-import Development from '../configs/Development';
-import ObjectUtils from '../../utils/ObjectUtils';
+import Development from '../configs/Development'
+import ObjectUtils from '../../utils/ObjectUtils'
 
 const store = new Store({
   testRedux

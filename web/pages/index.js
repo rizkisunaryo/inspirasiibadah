@@ -19,6 +19,8 @@ export default class Index extends PureComponent {
 class IndexComponent extends PureComponent {
   componentDidMount () {
     this.props.testAction(3, 1000)
+
+    console.log('CROTERS: ', process.env.INSPIRASI_IBADAH_GOOGLE_CLIENT_ID)
   }
 
   render () {
