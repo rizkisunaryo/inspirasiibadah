@@ -36,6 +36,7 @@
       "alert",
       "expect",
       "fetch",
+      "gapi",
       "it",
       "test"
     ]

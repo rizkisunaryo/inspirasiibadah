@@ -16,7 +16,13 @@ export default class MaterialIcon extends PureComponent {
     return (
       <div
         onClick={propOnClick}
-        style={{display: 'flex', flexDirection: 'column', width: 80, alignItems: 'center'}}>
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: 80,
+          alignItems: 'center',
+          cursor: 'pointer'
+        }}>
         <i
           className='material-icons'
           style={{fontSize: 24, color}}>{propType}</i>

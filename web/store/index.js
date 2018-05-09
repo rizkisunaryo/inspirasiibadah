@@ -1,12 +1,13 @@
 import Store, { thunk } from 'repatch'
 
 import api from '../api'
-import testRedux from '../store/testRedux'
 import Development from '../configs/Development'
 import ObjectUtils from '../../utils/ObjectUtils'
 
+import login from '../store/loginRedux'
+
 const store = new Store({
-  testRedux
+  login
 }).addMiddleware(thunk.withExtraArgument(api))
 
 if (Development.isDev) {
