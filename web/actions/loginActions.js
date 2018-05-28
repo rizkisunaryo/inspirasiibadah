@@ -1,15 +1,13 @@
 import LoginStatus from '../configs/LoginStatus'
+import {dispatcher} from '../../utils/ActionUtils'
 
-export function actionCheckLogin (inc, delay) {
+function loginDispatcher (dispatch, newLoginState) {
+  dispatcher(dispatch, 'login', newLoginState)
+}
+
+export function actionCheckLogin () {
   return () => async (dispatch, getState, api) => {
     let isLoggedIn = await api.checkLogin()
-
-    dispatch(state => ({
-      ...state,
-      login: {
-        ...state.login,
-        status: isLoggedIn ? LoginStatus.SUCCESSFUL : LoginStatus.FAILED
-      }
-    }))
+    loginDispatcher(dispatch, {status: isLoggedIn ? LoginStatus.SUCCESSFUL : LoginStatus.FAILED})
   }
 }

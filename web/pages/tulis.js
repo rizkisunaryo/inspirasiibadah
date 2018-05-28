@@ -19,7 +19,6 @@ export default class Tulis extends PureComponent {
 
 class TulisComponent extends PureComponent {
   componentDidMount () {
-    console.log('CROTERS 2: ', process.env.INSPIRASI_IBADAH_GOOGLE_CLIENT_ID)
     this.props.actionCheckLogin()
   }
 
