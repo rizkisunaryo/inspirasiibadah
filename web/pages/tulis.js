@@ -2,6 +2,7 @@ import Head from 'next/head'
 import {PureComponent} from 'react'
 import {connect, Provider} from 'react-redux'
 
+import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Headers from '../components/Headers'
 import {actionCheckLogin} from '../actions/loginActions'
@@ -25,6 +26,7 @@ class TulisComponent extends PureComponent {
   render () {
     return (
       <div>
+        <Base />
         <Headers />
         <Head>
           <script src='https://apis.google.com/js/platform.js' async defer />

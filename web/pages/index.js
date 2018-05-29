@@ -1,6 +1,7 @@
 import {PureComponent} from 'react'
 import {connect, Provider} from 'react-redux'
 
+import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Headers from '../components/Headers'
 import store from '../store'
@@ -19,6 +20,7 @@ class IndexComponent extends PureComponent {
   render () {
     return (
       <div>
+        <Base />
         <Headers />
         <BottomNavigationBar url={this.props.url} />
       </div>
