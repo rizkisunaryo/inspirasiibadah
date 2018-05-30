@@ -16,3 +16,12 @@ export function getCookie (name) {
 
   return cookieValue
 }
+
+export function setCookieForAYear (key, value) {
+  if (!document) return
+
+  let dat = new Date();
+  dat.setFullYear(dat.getFullYear() + 1);
+
+  document.cookie = `${key}=${value}; expires=${dat.toUTCString()}; path=/`
+}

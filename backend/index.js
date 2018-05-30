@@ -27,7 +27,10 @@ app.get('/token', async(req, res) => {
     res.status(500).send('Error when saving User');
   }
 
-  const token = jwt.sign({name: id}, process.env.INSPIRASI_IBADAH_TOKEN_KEY);
+  const token = jwt.sign(
+    {id, name: id},
+    process.env.INSPIRASI_IBADAH_TOKEN_KEY
+  );
   res.json({name: id, token});
 });
 
