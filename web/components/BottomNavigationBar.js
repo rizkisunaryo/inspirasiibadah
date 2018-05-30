@@ -7,7 +7,7 @@ import MaterialIcon from '../components/MaterialIcon'
 export default class BottomNavigationBar extends PureComponent {
   render () {
     const {
-      url: propUrl
+      router: propRouter
     } = this.props
 
     const styles = {
@@ -33,7 +33,7 @@ export default class BottomNavigationBar extends PureComponent {
           <div style={styles.navigationButtonContainer}>
             <Link href='/'>
               <MaterialIcon
-                active={propUrl && ['/', '/index'].indexOf(propUrl.pathname) > -1}
+                active={propRouter && ['/', '/index'].indexOf(propRouter.pathname) > -1}
                 type='home'
                 label='Home' />
             </Link>
@@ -41,7 +41,7 @@ export default class BottomNavigationBar extends PureComponent {
           <div style={styles.navigationButtonContainer}>
             <Link href='/cari'>
               <MaterialIcon
-                active={propUrl && ['/cari'].indexOf(propUrl.pathname) > -1}
+                active={propRouter && ['/cari'].indexOf(propRouter.pathname) > -1}
                 type='search'
                 label='Cari' />
             </Link>
@@ -49,7 +49,7 @@ export default class BottomNavigationBar extends PureComponent {
           <div style={styles.navigationButtonContainer}>
             <Link href='/tulis'>
               <MaterialIcon
-                active={propUrl && ['/tulis'].indexOf(propUrl.pathname) > -1}
+                active={propRouter && ['/tulis'].indexOf(propRouter.pathname) > -1}
                 type='add_circle'
                 label='Tulis' />
             </Link>
@@ -57,7 +57,7 @@ export default class BottomNavigationBar extends PureComponent {
           <div style={styles.navigationButtonContainer}>
             <Link href='/saya'>
               <MaterialIcon
-                active={propUrl && ['/saya'].indexOf(propUrl.pathname) > -1}
+                active={propRouter && ['/saya'].indexOf(propRouter.pathname) > -1}
                 type='perm_identity'
                 label='Saya' />
             </Link>

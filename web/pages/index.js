@@ -1,3 +1,4 @@
+import {withRouter} from 'next/router'
 import {PureComponent} from 'react'
 import {connect, Provider} from 'react-redux'
 
@@ -6,7 +7,7 @@ import BottomNavigationBar from '../components/BottomNavigationBar'
 import Headers from '../components/Headers'
 import store from '../store'
 
-export default class Index extends PureComponent {
+class Index extends PureComponent {
   render () {
     return (
       <Provider store={store}>
@@ -15,6 +16,7 @@ export default class Index extends PureComponent {
     )
   }
 }
+export default withRouter(Index)
 
 class IndexComponent extends PureComponent {
   render () {
@@ -22,7 +24,7 @@ class IndexComponent extends PureComponent {
       <div>
         <Base />
         <Headers />
-        <BottomNavigationBar url={this.props.url} />
+        <BottomNavigationBar router={this.props.router} />
       </div>
     )
   }

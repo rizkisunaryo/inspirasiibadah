@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import {withRouter} from 'next/router'
 import {PureComponent} from 'react'
 import {connect, Provider} from 'react-redux'
 
@@ -8,7 +9,7 @@ import Headers from '../components/Headers'
 import {actionCheckLogin} from '../actions/loginActions'
 import store from '../store'
 
-export default class Tulis extends PureComponent {
+class Tulis extends PureComponent {
   render () {
     return (
       <Provider store={store}>
@@ -17,6 +18,7 @@ export default class Tulis extends PureComponent {
     )
   }
 }
+export default withRouter(Tulis)
 
 class TulisComponent extends PureComponent {
   componentDidMount () {
@@ -32,7 +34,7 @@ class TulisComponent extends PureComponent {
           <script src='https://apis.google.com/js/platform.js' async defer />
           <meta name='google-signin-client_id' content={process.env.INSPIRASI_IBADAH_GOOGLE_CLIENT_ID} />
         </Head>
-        <BottomNavigationBar url={this.props.url} />
+        <BottomNavigationBar router={this.props.router} />
         {this.props.reduxLoginStatus === '' ? 'loading' : this.props.reduxLoginStatus}
       </div>
     )
