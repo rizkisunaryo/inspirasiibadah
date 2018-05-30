@@ -1,12 +1,12 @@
-import Head from 'next/head'
 import {withRouter} from 'next/router'
 import {PureComponent} from 'react'
 import {connect, Provider} from 'react-redux'
+import TextField from '@material-ui/core/TextField'
 
 import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
+import {getCookie} from '../../utils/CookieUtils'
 import Headers from '../components/Headers'
-import {actionCheckLogin} from '../actions/loginActions'
 import store from '../store'
 
 class Tulis extends PureComponent {
@@ -21,31 +21,39 @@ class Tulis extends PureComponent {
 export default withRouter(Tulis)
 
 class TulisComponent extends PureComponent {
-  componentDidMount () {
-    this.props.actionCheckLogin()
+  constructor (props) {
+    super(props)
+    this.state = {name: ''}
   }
-
+  componentDidMount () {
+    this.setState({name: getCookie('name')})
+  }
   render () {
     return (
-      <div>
+      <div style={{margin: '0 10px'}}>
         <Base />
         <Headers />
-        <Head>
-          <script src='https://apis.google.com/js/platform.js' async defer />
-          <meta name='google-signin-client_id' content={process.env.INSPIRASI_IBADAH_GOOGLE_CLIENT_ID} />
-        </Head>
         <BottomNavigationBar router={this.props.router} />
-        {this.props.reduxLoginStatus === '' ? 'loading' : this.props.reduxLoginStatus}
+        <TextField
+          label='Nama'
+          InputLabelProps={{
+            shrink: true
+          }}
+          placeholder={this.state.name}
+          fullWidth
+          margin='normal'
+        />
+        <TextField
+          label='Judul'
+          InputLabelProps={{
+            shrink: true
+          }}
+          fullWidth
+          margin='normal'
+        />
       </div>
     )
   }
 }
 
-const TulisConnect = connect(
-  state => ({
-    reduxLoginStatus: state.login.status
-  }),
-  {
-    actionCheckLogin
-  }
-)(TulisComponent)
+const TulisConnect = connect(state => ({}), {})(TulisComponent)

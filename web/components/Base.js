@@ -4,6 +4,8 @@ import {getCookie, setCookieForAYear} from '../../utils/CookieUtils'
 
 export default class Base extends PureComponent {
   componentDidMount () {
+    if (process.browser) return
+
     if (decodeURIComponent(document.cookie).indexOf('token') < 0 ||
       decodeURIComponent(document.cookie).indexOf('name') < 0) {
       fetch(BACKEND_URL + '/token')

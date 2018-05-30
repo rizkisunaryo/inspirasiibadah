@@ -27,7 +27,8 @@ export default class BottomNavigationBar extends PureComponent {
           width: '100%',
           height: 56,
           justifyContent: 'center',
-          backgroundColor: Colors.BLUE_300
+          backgroundColor: Colors.BLUE_300,
+          left: 0
         }}>
         <div style={{width: 480, height: '100%', display: 'flex', flexDirection: 'row'}}>
           <div style={styles.navigationButtonContainer}>
