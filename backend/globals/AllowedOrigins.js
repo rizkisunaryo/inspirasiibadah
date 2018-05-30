@@ -1,1 +1,3 @@
-module.exports = ['http://localhost:3000']
+'use strict';
+
+module.exports = ['http://localhost:3000'];
