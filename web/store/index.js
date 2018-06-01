@@ -2,7 +2,7 @@ import Store, { thunk } from 'repatch'
 
 import api from '../api'
 import Development from '../configs/Development'
-import ObjectUtils from '../../utils/ObjectUtils'
+import ObjectUtils from '../../utils/dist/ObjectUtils'
 
 import login from '../store/loginRedux'
 

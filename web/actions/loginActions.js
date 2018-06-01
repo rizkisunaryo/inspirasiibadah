@@ -1,5 +1,5 @@
 import LoginStatus from '../configs/LoginStatus'
-import {dispatcher} from '../../utils/ActionUtils'
+import {dispatcher} from '../../utils/dist/ActionUtils'
 
 function loginDispatcher (dispatch, newLoginState) {
   dispatcher(dispatch, 'login', newLoginState)

@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Colors from '../configs/Colors'
-import {getCookie} from '../../utils/CookieUtils'
+import {getCookie} from '../../utils/dist/CookieUtils'
 import Headers from '../components/Headers'
 import store from '../store'
 

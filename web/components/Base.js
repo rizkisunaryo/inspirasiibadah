@@ -1,6 +1,6 @@
 import {PureComponent} from 'react'
 import {BACKEND_URL} from '../configs/Backend'
-import {getCookie, setCookieForAYear} from '../../utils/CookieUtils'
+import {getCookie, setCookieForAYear} from '../../utils/dist/CookieUtils'
 
 export default class Base extends PureComponent {
   componentDidMount () {
