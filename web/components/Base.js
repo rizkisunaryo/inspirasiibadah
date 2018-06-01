@@ -6,8 +6,6 @@ export default class Base extends PureComponent {
   componentDidMount () {
     if (!process.browser) return
 
-    console.log('masuk sini: ', getCookie('nama'), !getCookie('nama'))
-
     if (!getCookie('token') || !getCookie('nama')) {
       fetch(BACKEND_URL + '/token')
         .then(resp => resp.json())
