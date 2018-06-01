@@ -14,7 +14,7 @@ export function getCookie (name) {
     }
   }
 
-  return cookieValue
+  return cookieValue === 'undefined' ? undefined : cookieValue
 }
 
 export function setCookieForAYear (key, value) {

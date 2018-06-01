@@ -4,19 +4,20 @@ import {getCookie, setCookieForAYear} from '../../utils/CookieUtils'
 
 export default class Base extends PureComponent {
   componentDidMount () {
-    if (process.browser) return
+    if (!process.browser) return
 
-    if (decodeURIComponent(document.cookie).indexOf('token') < 0 ||
-      decodeURIComponent(document.cookie).indexOf('name') < 0) {
+    console.log('masuk sini: ', getCookie('nama'), !getCookie('nama'))
+
+    if (!getCookie('token') || !getCookie('nama')) {
       fetch(BACKEND_URL + '/token')
         .then(resp => resp.json())
         .then(resp => {
-          setCookieForAYear('name', resp.name)
+          setCookieForAYear('nama', resp.nama)
           setCookieForAYear('token', resp.token)
         })
         .catch(err => console.log('error when getting token: ', err))
     } else {
-      setCookieForAYear('name', getCookie('name'))
+      setCookieForAYear('nama', getCookie('nama'))
       setCookieForAYear('token', getCookie('token'))
     }
   }

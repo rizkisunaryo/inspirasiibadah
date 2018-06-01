@@ -28,10 +28,10 @@ app.get('/token', async(req, res) => {
   }
 
   const token = jwt.sign(
-    {id, name: id},
+    {id, nama: id},
     process.env.INSPIRASI_IBADAH_TOKEN_KEY
   );
-  res.json({name: id, token});
+  res.json({nama: id, token});
 });
 
 app.listen(3010, () => console.log('Example app listening on port 3010!'));
