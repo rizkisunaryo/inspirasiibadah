@@ -1,3 +1,5 @@
+import {BACKEND_URL} from '../configs/Backend'
+
 const checkLoginFunction = (resolve) => {
   if (typeof gapi === 'undefined' || !gapi) {
     setTimeout(() => checkLoginFunction(resolve), 500)
@@ -19,6 +21,23 @@ const checkLoginFunction = (resolve) => {
   })
 }
 
+const createKisah = token => (judul, kisah) => {
+  return fetch(BACKEND_URL + '/kisah', {
+    method: 'POST',
+    headers: {
+      token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({judul, kisah})
+  }).then(resp => resp.json())
+}
+
+const generateNamaAndToken = () => {
+  return fetch(BACKEND_URL + '/token').then(resp => resp.json())
+}
+
 export default {
-  checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve))
+  checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve)),
+  createKisah,
+  generateNamaAndToken
 }

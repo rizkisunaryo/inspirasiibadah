@@ -8,6 +8,7 @@ import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Colors from '../configs/Colors'
 import Headers from '../components/Headers'
+import {createKisah} from '../actions/kisahActions'
 import store from '../store'
 
 class Tulis extends PureComponent {
@@ -75,7 +76,8 @@ class TulisComponent extends PureComponent {
               Colors.BLUE_300,
               color: 'white',
               alignItems: 'center'
-            }}>
+            }}
+            onClick={() => this.props.createKisah(this.valueJudul, this.valueKisah)} >
             <div style={{fontSize: 14, marginRight: 5}}>SEND</div>
             <Icon>send</Icon>
           </button>
@@ -85,4 +87,4 @@ class TulisComponent extends PureComponent {
   }
 }
 
-const TulisConnect = connect(state => ({nama: state.user.nama}), {})(TulisComponent)
+const TulisConnect = connect(state => ({nama: state.user.nama}), {createKisah})(TulisComponent)
