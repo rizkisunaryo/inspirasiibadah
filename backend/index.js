@@ -6,8 +6,9 @@ var app = express();
 var jwt = require('jsonwebtoken');
 
 var AllowedOrigins = require('./globals/AllowedOrigins');
-var {save} = require('./utils/Db');
+var {get: dbGet, save} = require('./utils/Db');
 var StringUtils = require('../utils/dist/StringUtils');
+var {verifyToken} = require('./utils/Token');
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -30,6 +31,7 @@ app.get('/token', async(req, res) => {
   } catch (error) {
     console.log('Error when saving User: ', error);
     res.status(500).send('Error when saving User');
+    return;
   }
 
   const token = jwt.sign(
@@ -41,13 +43,15 @@ app.get('/token', async(req, res) => {
 
 app.post('/kisah', async(req, res) => {
   const token = req.get('token');
-  const userObj = jwt.verify(token, process.env.INSPIRASI_IBADAH_TOKEN_KEY);
+
+  let userReq = verifyToken(res, token);
+  if (!userReq) return;
 
   const id = StringUtils.generateId();
   const now = (new Date).toUTCString();
   try {
     await save('Kisah', id, {
-      penulisId: userObj.id,
+      penulisId: userReq.id,
       judul: req.body.judul,
       kisah: req.body.kisah,
       createdAt: now,
@@ -56,9 +60,26 @@ app.post('/kisah', async(req, res) => {
   } catch (error) {
     console.log('Error when saving Kisah: ', error);
     res.status(500).send('Error when saving Kisah');
+    return;
   }
 
   res.json({id});
+});
+
+app.get('/user/nama', async(req, res) => {
+  const token = req.get('token');
+
+  let userReq = verifyToken(res, token);
+  if (!userReq) return;
+
+  try {
+    const userDb = await dbGet('User', userReq.id);
+    const nama = userDb.nama ? userDb.nama : userDb.name;
+    res.json({nama});
+  } catch (error) {
+    console.log('Error when getting User by token: ', token);
+    res.status(500).send('Error when getting User');
+  }
 });
 
 app.listen(3010, () => console.log('Example app listening on port 3010!'));

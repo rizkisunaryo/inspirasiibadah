@@ -5,18 +5,12 @@ var datastore = require('../globals/Datastore');
 async function save(kind, name, data = {}) {
   const key = datastore.key([kind, name]);
 
-  return new Promise((resolve, reject) => {
-    datastore.save({
-      key: key,
-      data,
-    }, err => {
-      if (!err) {
-        resolve(true);
-        return;
-      }
-      reject(err);
-    });
-  });
+  return datastore.save({key: key, data});
 }
 
-module.exports = {save};
+async function get(kind, name) {
+  const key = datastore.key([kind, name]);
+  return datastore.get(key).then(results => results[0][datastore.KEY]);
+}
+
+module.exports = {get, save};

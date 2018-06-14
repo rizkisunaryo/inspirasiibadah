@@ -36,8 +36,13 @@ const generateNamaAndToken = () => {
   return fetch(BACKEND_URL + '/token').then(resp => resp.json())
 }
 
+const getNama = token => {
+  return fetch(BACKEND_URL + '/user/nama', {headers: {token}}).then(resp => resp.json())
+}
+
 export default {
   checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve)),
   createKisah,
-  generateNamaAndToken
+  generateNamaAndToken,
+  getNama
 }

@@ -8,23 +8,19 @@ const userDispatcher = (dispatch, newUserState) => {
 export const initUser = () => {
   return () => async (dispatch, getState, {api}) => {
     let {nama, token} = getState().user
-    if (nama === '' && token === '') {
-      if (!getCookie('token') || !getCookie('nama')) {
-        try {
-          const resp = await api.generateNamaAndToken()
-          setCookieForAYear('nama', resp.nama)
-          setCookieForAYear('token', resp.token)
-          userDispatcher(dispatch, resp)
-        } catch (error) {
-          console.log('error when getting token: ', error)
-        }
-      } else {
-        nama = getCookie('nama')
-        token = getCookie('token')
-        setCookieForAYear('nama', getCookie('nama'))
-        setCookieForAYear('token', getCookie('token'))
-        userDispatcher(dispatch, {nama, token})
+    if (!getCookie('token')) {
+      try {
+        const resp = await api.generateNamaAndToken()
+        setCookieForAYear('token', resp.token)
+        userDispatcher(dispatch, resp)
+      } catch (error) {
+        console.log('error when getting token: ', error)
       }
+    } else if (nama === '' || token === '') {
+      token = getCookie('token')
+      const user = await api.getNama(token)
+      setCookieForAYear('token', token)
+      userDispatcher(dispatch, {nama: user.nama, token})
     }
   }
 }
