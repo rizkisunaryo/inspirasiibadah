@@ -5,10 +5,12 @@ import Development from '../configs/Development'
 import ObjectUtils from '../../utils/dist/ObjectUtils'
 
 import login from '../store/loginRedux'
+import status from '../store/statusRedux'
 import user from '../store/userRedux'
 
 const store = new Store({
   login,
+  status,
   user
 }).addMiddleware(thunk.withExtraArgument({api}))
 
