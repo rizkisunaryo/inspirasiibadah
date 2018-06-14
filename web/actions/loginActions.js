@@ -6,7 +6,7 @@ function loginDispatcher (dispatch, newLoginState) {
 }
 
 export function actionCheckLogin () {
-  return () => async (dispatch, getState, api) => {
+  return () => async (dispatch, getState, {api}) => {
     let isLoggedIn = await api.checkLogin()
     loginDispatcher(dispatch, {status: isLoggedIn ? LoginStatus.SUCCESSFUL : LoginStatus.FAILED})
   }

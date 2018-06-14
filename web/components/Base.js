@@ -1,26 +1,17 @@
 import {PureComponent} from 'react'
-import {BACKEND_URL} from '../configs/Backend'
-import {getCookie, setCookieForAYear} from '../../utils/dist/CookieUtils'
+import {connect} from 'react-redux'
+import {initUser} from '../actions/userActions'
 
-export default class Base extends PureComponent {
+class Base extends PureComponent {
   componentDidMount () {
     if (!process.browser) return
 
-    if (!getCookie('token') || !getCookie('nama')) {
-      fetch(BACKEND_URL + '/token')
-        .then(resp => resp.json())
-        .then(resp => {
-          setCookieForAYear('nama', resp.nama)
-          setCookieForAYear('token', resp.token)
-        })
-        .catch(err => console.log('error when getting token: ', err))
-    } else {
-      setCookieForAYear('nama', getCookie('nama'))
-      setCookieForAYear('token', getCookie('token'))
-    }
+    this.props.initUser()
   }
 
   render () {
     return null
   }
 }
+
+export default connect(state => ({}), {initUser})(Base)

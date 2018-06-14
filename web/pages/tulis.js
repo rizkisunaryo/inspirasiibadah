@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField'
 import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Colors from '../configs/Colors'
-import {getCookie} from '../../utils/dist/CookieUtils'
 import Headers from '../components/Headers'
 import store from '../store'
 
@@ -23,13 +22,6 @@ class Tulis extends PureComponent {
 export default withRouter(Tulis)
 
 class TulisComponent extends PureComponent {
-  constructor (props) {
-    super(props)
-    this.state = {nama: ''}
-  }
-  componentDidMount () {
-    this.setState({nama: getCookie('nama')})
-  }
   render () {
     return (
       <div style={{margin: '0 10px', height: '100%'}}>
@@ -41,10 +33,10 @@ class TulisComponent extends PureComponent {
           InputLabelProps={{
             shrink: true
           }}
-          placeholder={this.state.nama}
+          placeholder={this.props.nama}
           fullWidth
           margin='normal'
-          onChange={({target}) => { this.nama = target.value }}
+          onChange={({target}) => { this.valueNama = target.value }}
         />
         <TextField
           label='Judul'
@@ -53,7 +45,7 @@ class TulisComponent extends PureComponent {
           }}
           fullWidth
           margin='normal'
-          onChange={({target}) => { this.judul = target.value }}
+          onChange={({target}) => { this.valueJudul = target.value }}
         />
         <textarea
           style={{
@@ -66,7 +58,7 @@ class TulisComponent extends PureComponent {
             height: 'calc(100% - 270px)'
           }}
           placeholder='Apa kisahmu?'
-          onChange={({target}) => { this.kisah = target.value }} />
+          onChange={({target}) => { this.valueKisah = target.value }} />
         <div
           style={{
             display: 'flex',
@@ -93,4 +85,4 @@ class TulisComponent extends PureComponent {
   }
 }
 
-const TulisConnect = connect(state => ({}), {})(TulisComponent)
+const TulisConnect = connect(state => ({nama: state.user.nama}), {})(TulisComponent)

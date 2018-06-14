@@ -4,7 +4,7 @@ export function getCookie (name) {
   const cookieStr = decodeURIComponent(document.cookie)
   const cookieArr = cookieStr.split(';')
 
-  let cookieValue = undefined
+  let cookieValue
   const nameEqualSign = name + '='
   for (let key in cookieArr) {
     let cookie = cookieArr[key].trim()
@@ -20,8 +20,8 @@ export function getCookie (name) {
 export function setCookieForAYear (key, value) {
   if (!document) return
 
-  let dat = new Date();
-  dat.setFullYear(dat.getFullYear() + 1);
+  let dat = new Date()
+  dat.setFullYear(dat.getFullYear() + 1)
 
   document.cookie = `${key}=${value}; expires=${dat.toUTCString()}; path=/`
 }

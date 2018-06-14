@@ -11,7 +11,7 @@ function getCookie(name) {
   var cookieStr = decodeURIComponent(document.cookie);
   var cookieArr = cookieStr.split(';');
 
-  var cookieValue = undefined;
+  var cookieValue = void 0;
   var nameEqualSign = name + '=';
   for (var key in cookieArr) {
     var cookie = cookieArr[key].trim();

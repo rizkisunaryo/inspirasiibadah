@@ -5,10 +5,12 @@ import Development from '../configs/Development'
 import ObjectUtils from '../../utils/dist/ObjectUtils'
 
 import login from '../store/loginRedux'
+import user from '../store/userRedux'
 
 const store = new Store({
-  login
-}).addMiddleware(thunk.withExtraArgument(api))
+  login,
+  user
+}).addMiddleware(thunk.withExtraArgument({api}))
 
 if (Development.isDev) {
   // logger middleware

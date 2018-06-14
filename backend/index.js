@@ -4,10 +4,10 @@ var express = require('express');
 var app = express();
 
 var jwt = require('jsonwebtoken');
-var uuidv4 = require('uuid/v4');
 
-var {save} = require('./utils/Db');
 var AllowedOrigins = require('./globals/AllowedOrigins');
+var {saveWithId} = require('./utils/Db');
+var StringUtils = require('../utils/dist/StringUtils');
 
 app.use((req, res, next) => {
   const origin = req.get('origin');
@@ -18,10 +18,10 @@ app.use((req, res, next) => {
 });
 
 app.get('/token', async(req, res) => {
-  const id = uuidv4().split('-').join('').substr(0, 8);
+  const id = StringUtils.generateId();
 
   try {
-    await save('User', id);
+    await saveWithId('User', id);
   } catch (error) {
     console.log('Error when saving User: ', error);
     res.status(500).send('Error when saving User');

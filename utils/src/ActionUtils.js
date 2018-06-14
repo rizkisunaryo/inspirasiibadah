@@ -1,4 +1,4 @@
-export function dispatcher (dispatch, substateName, newSubstate) {
+export const dispatcher = (dispatch, substateName, newSubstate) => {
   dispatch(state => ({
     ...state,
     [substateName]: {
