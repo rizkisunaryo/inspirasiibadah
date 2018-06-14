@@ -32,7 +32,11 @@ app.get('/token', async(req, res) => {
   const id = StringUtils.generateId();
 
   try {
-    await save('User', id);
+    const now = (new Date).toUTCString();
+    await save('User', id, {
+      createdAt: now,
+      updatedAt: now,
+    });
   } catch (error) {
     console.log('Error when saving User: ', error);
     res.status(500).send('Error when saving User');
@@ -92,7 +96,10 @@ app.put('/user/nama', async(req, res) => {
   if (!userReq) return;
 
   try {
-    await save('User', userReq.id, {nama: req.body.nama});
+    await save('User', userReq.id, {
+      nama: req.body.nama,
+      updatedAt: (new Date).toUTCString(),
+    });
     res.status(200).send();
   } catch (error) {
     console.log('Error when updating User: ', error);
