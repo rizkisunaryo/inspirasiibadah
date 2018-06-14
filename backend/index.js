@@ -6,6 +6,7 @@ var app = express();
 var jwt = require('jsonwebtoken');
 
 var AllowedOrigins = require('./globals/AllowedOrigins');
+var datastore = require('./globals/Datastore');
 var {get: dbGet, save} = require('./utils/Db');
 var StringUtils = require('../utils/dist/StringUtils');
 var {verifyToken} = require('./utils/Token');
@@ -18,6 +19,10 @@ app.use((req, res, next) => {
     res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept, token'
+    );
+    res.header(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT'
     );
   }
   next();
@@ -74,11 +79,24 @@ app.get('/user/nama', async(req, res) => {
 
   try {
     const userDb = await dbGet('User', userReq.id);
-    const nama = userDb.nama ? userDb.nama : userDb.name;
+    const nama = userDb.nama ? userDb.nama : userDb[datastore.KEY].name;
     res.json({nama});
   } catch (error) {
     console.log('Error when getting User by token: ', token);
     res.status(500).send('Error when getting User');
+  }
+});
+app.put('/user/nama', async(req, res) => {
+  const token = req.get('token');
+  let userReq = verifyToken(res, token);
+  if (!userReq) return;
+
+  try {
+    await save('User', userReq.id, {nama: req.body.nama});
+    res.status(200).send();
+  } catch (error) {
+    console.log('Error when updating User: ', error);
+    res.status(500).send('Error when saving User');
   }
 });
 

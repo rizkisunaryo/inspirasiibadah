@@ -1,5 +1,16 @@
 import {BACKEND_URL} from '../configs/Backend'
 
+const changeNama = token => nama => {
+  return fetch(BACKEND_URL + '/user/nama', {
+    method: 'PUT',
+    headers: {
+      token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({nama})
+  }).then(resp => resp.json())
+}
+
 const checkLoginFunction = (resolve) => {
   if (typeof gapi === 'undefined' || !gapi) {
     setTimeout(() => checkLoginFunction(resolve), 500)
@@ -41,6 +52,7 @@ const getNama = token => {
 }
 
 export default {
+  changeNama,
   checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve)),
   createKisah,
   generateNamaAndToken,
