@@ -1,7 +1,7 @@
 import {dispatcher} from '../../utils/dist/ActionUtils'
 import {getCookie, setCookieForAYear} from '../../utils/dist/CookieUtils'
 
-const userDispatcher = (dispatch, newUserState) => {
+export const userDispatcher = (dispatch, newUserState) => {
   dispatcher(dispatch, 'user', newUserState)
 }
 
