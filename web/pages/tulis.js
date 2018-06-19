@@ -56,7 +56,8 @@ class TulisComponent extends PureComponent {
             width: 'calc(100% - 12px)',
             marginTop: 10,
             padding: 5,
-            height: 'calc(100% - 270px)'
+            height: 'calc(100% - 270px)',
+            fontSize: 16
           }}
           placeholder='Apa kisahmu?'
           onChange={({target}) => { this.valueKisah = target.value }} />
