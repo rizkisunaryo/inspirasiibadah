@@ -39,8 +39,8 @@ app.get('/token', async(req, res) => {
       updatedAt: now,
     });
   } catch (error) {
-    console.log(ERROR_KISAH_30_CHARACTERS, ': ', error);
-    res.status(500).json({error: ERROR_KISAH_30_CHARACTERS});
+    console.log('Error when saving User: ', error);
+    res.status(500).json({error: 'Error when saving User: '});
     return;
   }
 
@@ -59,10 +59,10 @@ app.post('/kisah', async(req, res) => {
 
   const kisah = req.body.kisah;
   if (!kisah || kisah.length < 30) {
-    console.log('Kisah harus lebih dari 30 karakter: ', kisah);
+    console.log(ERROR_KISAH_30_CHARACTERS, ': ', kisah);
     res
       .status(403)
-      .json({error: 'Kisah harus lebih dari 30 karakter'});
+      .json({error: ERROR_KISAH_30_CHARACTERS});
     return;
   }
 
