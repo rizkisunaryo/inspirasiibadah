@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import {ERROR_KISAH_30_CHARACTERS} from '../../utils/dist/ErrorStrings'
+import {ERROR_KISAH_30_CHARACTERS} from '../../utils/dist/constants/Errors'
 import {errorAction, statusDispatcher, successAction} from '../actions/statusActions'
 import {tokenizer} from '../utils/TokenUtil'
 import {userDispatcher} from '../actions/userActions'

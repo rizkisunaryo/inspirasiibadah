@@ -9,7 +9,7 @@ var AllowedOrigins = require('./globals/AllowedOrigins');
 var datastore = require('./globals/Datastore');
 var {get: dbGet, save} = require('./utils/Db');
 var StringUtils = require('../utils/dist/StringUtils');
-var {ERROR_KISAH_30_CHARACTERS} = require('../utils/dist/ErrorStrings');
+var {ERROR_KISAH_30_CHARACTERS} = require('../utils/dist/constants/Errors');
 var {verifyToken} = require('./utils/Token');
 
 app.use(express.json());
