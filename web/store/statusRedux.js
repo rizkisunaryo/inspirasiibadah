@@ -1,4 +1,5 @@
 export default {
   loading: false,
-  error: undefined
+  error: false,
+  message: ''
 }

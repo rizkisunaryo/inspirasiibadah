@@ -8,7 +8,7 @@ function verifyToken(res, token) {
     return user;
   } catch (error) {
     console.log('Unable to verify the token: ', token);
-    res.status(401).send('Unable to verify the token');
+    res.status(401).json({error: 'Unable to verify the token'});
     return false;
   }
 }

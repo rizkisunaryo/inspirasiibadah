@@ -76,7 +76,8 @@ class TulisComponent extends PureComponent {
               backgroundColor:
               Colors.BLUE_300,
               color: 'white',
-              alignItems: 'center'
+              alignItems: 'center',
+              cursor: 'pointer'
             }}
             onClick={() => this.props.createKisah(this.valueNama, this.valueJudul, this.valueKisah)} >
             <div style={{fontSize: 14, marginRight: 5}}>SEND</div>

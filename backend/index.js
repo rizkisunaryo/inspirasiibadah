@@ -9,6 +9,7 @@ var AllowedOrigins = require('./globals/AllowedOrigins');
 var datastore = require('./globals/Datastore');
 var {get: dbGet, save} = require('./utils/Db');
 var StringUtils = require('../utils/dist/StringUtils');
+var {ERROR_KISAH_30_CHARACTERS} = require('../utils/dist/ErrorStrings');
 var {verifyToken} = require('./utils/Token');
 
 app.use(express.json());
@@ -38,8 +39,8 @@ app.get('/token', async(req, res) => {
       updatedAt: now,
     });
   } catch (error) {
-    console.log('Error when saving User: ', error);
-    res.status(500).send('Error when saving User');
+    console.log(ERROR_KISAH_30_CHARACTERS, ': ', error);
+    res.status(500).json({error: ERROR_KISAH_30_CHARACTERS});
     return;
   }
 
@@ -56,6 +57,15 @@ app.post('/kisah', async(req, res) => {
   let userReq = verifyToken(res, token);
   if (!userReq) return;
 
+  const kisah = req.body.kisah;
+  if (!kisah || kisah.length < 30) {
+    console.log('Kisah harus lebih dari 30 karakter: ', kisah);
+    res
+      .status(403)
+      .json({error: 'Kisah harus lebih dari 30 karakter'});
+    return;
+  }
+
   const id = StringUtils.generateId();
   const now = (new Date).toUTCString();
   try {
@@ -68,7 +78,7 @@ app.post('/kisah', async(req, res) => {
     });
   } catch (error) {
     console.log('Error when saving Kisah: ', error);
-    res.status(500).send('Error when saving Kisah');
+    res.status(500).json({error: 'Error when saving Kisah'});
     return;
   }
 
@@ -87,7 +97,7 @@ app.get('/user/nama', async(req, res) => {
     res.json({nama});
   } catch (error) {
     console.log('Error when getting User by token: ', token);
-    res.status(500).send('Error when getting User');
+    res.status(500).json({error: 'Error when getting User'});
   }
 });
 app.put('/user/nama', async(req, res) => {
@@ -100,10 +110,10 @@ app.put('/user/nama', async(req, res) => {
       nama: req.body.nama,
       updatedAt: (new Date).toUTCString(),
     });
-    res.status(200).send();
+    res.status(200).json({});
   } catch (error) {
     console.log('Error when updating User: ', error);
-    res.status(500).send('Error when saving User');
+    res.status(500).json({error: 'Error when saving User'});
   }
 });
 

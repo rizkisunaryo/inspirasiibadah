@@ -1,21 +1,32 @@
-import {dispatcher} from '../../utils/dist/ActionUtils'
+import {ERROR_KISAH_30_CHARACTERS} from '../../utils/dist/ErrorStrings'
+import {errorAction, statusDispatcher, successAction} from '../actions/statusActions'
 import {tokenizer} from '../utils/TokenUtil'
-
-const statusDispatcher = (dispatch, newStatusState) => {
-  dispatcher(dispatch, 'status', newStatusState)
-}
 
 export const createKisah = (nama, judul, kisah) => {
   return () => async (dispatch, getState, {api}) => {
-    statusDispatcher(dispatch, {loading: true})
+    try {
+      if (!kisah || kisah.length < 30) {
+        await errorAction(ERROR_KISAH_30_CHARACTERS)()(dispatch)
+        return
+      }
 
-    const stateNama = getState().user.nama
-    if (nama !== stateNama) {
-      tokenizer(api.changeNama)(nama)
+      statusDispatcher(dispatch, {loading: true})
+
+      const stateNama = getState().user.nama
+      if (nama !== stateNama) {
+        tokenizer(api.changeNama)(nama)
+      }
+
+      const kisahResp = await tokenizer(api.createKisah)(judul, kisah)
+      if (kisahResp.error) {
+        // statusDispatcher(dispatch, {loading: false, error: true, message: kisahResp.error})
+        await errorAction(kisahResp.error)()(dispatch)
+      } else {
+        console.log('created Kisah: ', kisahResp)
+        await successAction()()(dispatch)
+      }
+    } catch (error) {
+      await errorAction(error.toString())()(dispatch)
     }
-
-    const kisahId = await tokenizer(api.createKisah)(judul, kisah)
-    console.log('created Kisah with id: ', kisahId)
-    statusDispatcher(dispatch, {loading: false})
   }
 }
