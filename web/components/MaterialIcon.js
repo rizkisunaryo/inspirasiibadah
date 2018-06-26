@@ -1,6 +1,6 @@
 import {PureComponent} from 'react'
 
-import Colors from '../configs/Colors'
+import Colors from '../../utils/dist/constants/Colors'
 
 export default class MaterialIcon extends PureComponent {
   render () {

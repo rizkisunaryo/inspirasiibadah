@@ -5,29 +5,35 @@ import {connect, Provider} from 'react-redux'
 import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
 import Headers from '../components/Headers'
+import KisahCard from '../components/KisahCard'
 import store from '../store'
 
-class Index extends PureComponent {
+class Saya extends PureComponent {
   render () {
     return (
       <Provider store={store}>
-        <IndexConnect {...this.props} />
+        <SayaConnect {...this.props} />
       </Provider>
     )
   }
 }
-export default withRouter(Index)
+export default withRouter(Saya)
 
-class IndexComponent extends PureComponent {
+class SayaComponent extends PureComponent {
   render () {
     return (
-      <div>
+      <div style={{padding: 10, height: 'calc(100% - 76px)', overflowY: 'scroll'}}>
         <Headers />
         <Base />
         <BottomNavigationBar router={this.props.router} />
+        {this.props.kisahList.map(kisahObj =>
+          <KisahCard key={kisahObj.id} nama={this.props.nama} {...kisahObj} />)}
       </div>
     )
   }
 }
 
-const IndexConnect = connect(state => ({}), {})(IndexComponent)
+const SayaConnect = connect(state => ({
+  kisahList: state.kisahListSaya.list,
+  nama: state.user.nama
+}), {})(SayaComponent)

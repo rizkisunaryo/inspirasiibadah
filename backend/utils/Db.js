@@ -8,6 +8,7 @@ async function get(kind, name) {
 }
 
 async function save(kind, name, data = {}) {
+  data.id = name;
   const key = datastore.key([kind, name]);
   return datastore.save({key: key, data});
 }

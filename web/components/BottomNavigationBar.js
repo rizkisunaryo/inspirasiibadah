@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {PureComponent} from 'react'
 
-import Colors from '../configs/Colors'
+import Colors from '../../utils/dist/constants/Colors'
 import MaterialIcon from '../components/MaterialIcon'
 
 export default class BottomNavigationBar extends PureComponent {

@@ -1,0 +1,7 @@
+indexes:
+
+- kind: Kisah
+  properties:
+  - name: penulisId
+  - name: updatedAt
+    direction: desc

@@ -2,7 +2,12 @@ html, body {
   margin: 0;
   height: 100%;
   font-family: 'Roboto';
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  word-wrap: break-word;
 }
+
+::-webkit-scrollbar { width: 0 !important }
 
 #__next {
   height: 100%;

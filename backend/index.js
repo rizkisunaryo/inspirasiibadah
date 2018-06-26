@@ -84,6 +84,25 @@ app.post('/kisah', async(req, res) => {
 
   res.json({id});
 });
+app.get('/kisah/saya', async(req, res) => {
+  let userReq = verifyToken(res, req.get('token'));
+  if (!userReq) return;
+
+  try {
+    const kisahQuery = datastore.createQuery('Kisah');
+    const ltOrGt = req.query.isAfter === 'true' ? '>=' : '<=';
+    const filterQuery = kisahQuery
+      .filter('penulisId', userReq.id)
+      .filter('updatedAt', ltOrGt, req.query.updatedAt);
+    const limitQuery = filterQuery.limit(Number(req.query.limit));
+    const results = await datastore.runQuery(limitQuery);
+    res.json(results[0]);
+  } catch (error) {
+    console.log('Error when retrieving Kisah: ', error);
+    res.status(500).json({error: 'Error when retrieving Kisah'});
+    return;
+  }
+});
 
 app.get('/user/nama', async(req, res) => {
   const token = req.get('token');
@@ -93,7 +112,7 @@ app.get('/user/nama', async(req, res) => {
 
   try {
     const userDb = await dbGet('User', userReq.id);
-    const nama = userDb.nama ? userDb.nama : userDb[datastore.KEY].name;
+    const nama = userDb.nama ? userDb.nama : userDb.id;
     res.json({nama});
   } catch (error) {
     console.log('Error when getting User by token: ', token);
@@ -106,10 +125,12 @@ app.put('/user/nama', async(req, res) => {
   if (!userReq) return;
 
   try {
-    await save('User', userReq.id, {
-      nama: req.body.nama,
-      updatedAt: (new Date).toUTCString(),
-    });
+    let user = await dbGet('User', userReq.id);
+
+    user.nama = req.body.nama;
+    user.updatedAt = (new Date).toUTCString();
+
+    await save('User', userReq.id, user);
     res.status(200).json({});
   } catch (error) {
     console.log('Error when updating User: ', error);

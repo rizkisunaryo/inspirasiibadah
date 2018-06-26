@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 
 import Base from '../components/Base'
 import BottomNavigationBar from '../components/BottomNavigationBar'
-import Colors from '../configs/Colors'
+import Colors from '../../utils/dist/constants/Colors'
 import Headers from '../components/Headers'
 import {createKisah} from '../actions/kisahActions'
 import store from '../store'
@@ -26,8 +26,8 @@ class TulisComponent extends PureComponent {
   render () {
     return (
       <div style={{margin: '0 10px', height: '100%'}}>
-        <Base />
         <Headers />
+        <Base />
         <BottomNavigationBar router={this.props.router} />
         <TextField
           label='Nama'
@@ -73,11 +73,11 @@ class TulisComponent extends PureComponent {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              backgroundColor:
-              Colors.BLUE_300,
+              backgroundColor: Colors.BLUE_300,
               color: 'white',
               alignItems: 'center',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              borderWidth: 0
             }}
             onClick={() => this.props.createKisah(this.valueNama, this.valueJudul, this.valueKisah)} >
             <div style={{fontSize: 14, marginRight: 5}}>SEND</div>

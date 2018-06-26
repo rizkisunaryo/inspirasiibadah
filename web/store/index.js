@@ -4,11 +4,13 @@ import api from '../api'
 import Development from '../configs/Development'
 import ObjectUtils from '../../utils/dist/ObjectUtils'
 
+import kisahList from '../store/kisahListRedux'
 import login from '../store/loginRedux'
 import status from '../store/statusRedux'
 import user from '../store/userRedux'
 
 const store = new Store({
+  kisahListSaya: kisahList,
   login,
   status,
   user

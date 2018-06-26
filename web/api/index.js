@@ -1,4 +1,5 @@
 import {BACKEND_URL} from '../configs/Backend'
+import { generateUrlQuery } from '../../utils/dist/UrlUtils'
 
 const changeNama = token => nama => {
   return fetch(BACKEND_URL + '/user/nama', {
@@ -51,10 +52,16 @@ const getNama = token => {
   return fetch(BACKEND_URL + '/user/nama', {headers: {token}}).then(resp => resp.json())
 }
 
+const listKisahSaya = token => paramObj => {
+  return fetch(BACKEND_URL + '/kisah/saya' + generateUrlQuery(paramObj), {headers: {token}})
+    .then(resp => resp.json())
+}
+
 export default {
   changeNama,
   checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve)),
   createKisah,
   generateNamaAndToken,
-  getNama
+  getNama,
+  listKisahSaya
 }
