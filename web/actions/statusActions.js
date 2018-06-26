@@ -1,17 +1,17 @@
 import {dispatcher} from '../../utils/dist/ActionUtils'
 
-export const statusDispatcher = (dispatch, newStatusState) => {
-  dispatcher(dispatch, 'status', newStatusState)
+export const statusDispatcher = (dispatch, actionName, newStatusState) => {
+  dispatcher(dispatch, actionName, 'status', newStatusState)
 }
 
 export const successAction = () => {
   return () => async (dispatch) => {
-    statusDispatcher(dispatch, {loading: false, error: false, message: ''})
+    statusDispatcher(dispatch, 'successAction: 1', {loading: false, error: false, message: ''})
   }
 }
 
 export const errorAction = (message) => {
   return () => async (dispatch) => {
-    statusDispatcher(dispatch, {loading: false, error: true, message})
+    statusDispatcher(dispatch, 'errorAction: 1', {loading: false, error: true, message})
   }
 }

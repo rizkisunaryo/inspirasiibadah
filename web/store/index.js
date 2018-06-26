@@ -10,6 +10,7 @@ import status from '../store/statusRedux'
 import user from '../store/userRedux'
 
 const store = new Store({
+  actionName: '',
   kisahListSaya: kisahList,
   login,
   status,
@@ -21,8 +22,13 @@ if (Development.isDev) {
   store.addMiddleware(store => next => reducer => {
     const state = store.getState()
     const nextState = reducer(state)
-    const diff = ObjectUtils.difference(nextState, state)
-    console.log('\nprevState: ', state, '\nnextState: ', nextState, '\ndiff: ', diff, '\n\n')
+    if (typeof nextState !== 'function') {
+      console.log(
+        '\nprevState: ', state,
+        '\nnextState: ', nextState,
+        '\ndiff: ', ObjectUtils.difference(nextState, state), '\n\n'
+      )
+    }
     return next(_ => nextState)
   })
 }

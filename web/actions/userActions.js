@@ -1,8 +1,8 @@
 import {dispatcher} from '../../utils/dist/ActionUtils'
 import {getCookie, setCookieForAYear} from '../../utils/dist/CookieUtils'
 
-export const userDispatcher = (dispatch, newUserState) => {
-  dispatcher(dispatch, 'user', newUserState)
+export const userDispatcher = (dispatch, actionName, newUserState) => {
+  dispatcher(dispatch, actionName, 'user', newUserState)
 }
 
 export const initUser = () => {
@@ -12,7 +12,7 @@ export const initUser = () => {
       try {
         const resp = await api.generateNamaAndToken()
         setCookieForAYear('token', resp.token)
-        userDispatcher(dispatch, resp)
+        userDispatcher(dispatch, 'initUser: 1', resp)
       } catch (error) {
         console.log('error when getting token: ', error)
       }
@@ -20,7 +20,7 @@ export const initUser = () => {
       token = getCookie('token')
       const user = await api.getNama(token)
       setCookieForAYear('token', token)
-      userDispatcher(dispatch, {nama: user.nama, token})
+      userDispatcher(dispatch, 'initUser: 2', {nama: user.nama, token})
     }
   }
 }

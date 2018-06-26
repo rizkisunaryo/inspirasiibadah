@@ -6,8 +6,8 @@ import {errorAction, statusDispatcher, successAction} from '../actions/statusAct
 import {tokenizer} from '../utils/TokenUtil'
 import {userDispatcher} from '../actions/userActions'
 
-export const kisahListSayaDispatcher = (dispatch, newStatusState) => {
-  dispatcher(dispatch, 'kisahListSaya', newStatusState)
+export const kisahListSayaDispatcher = (dispatch, actionName, newStatusState) => {
+  dispatcher(dispatch, actionName, 'kisahListSaya', newStatusState)
 }
 
 export const createKisah = (nama, judul, kisah) => {
@@ -18,12 +18,12 @@ export const createKisah = (nama, judul, kisah) => {
         return
       }
 
-      statusDispatcher(dispatch, {loading: true})
+      statusDispatcher(dispatch, 'createKisah: 1', {loading: true})
 
       const stateNama = getState().user.nama
       if (nama && nama !== stateNama) {
         tokenizer(api.changeNama)(nama)
-        userDispatcher(dispatch, {nama})
+        userDispatcher(dispatch, 'createKisah: 2', {nama})
       }
 
       const kisahResp = await tokenizer(api.createKisah)(judul, kisah)
@@ -36,6 +36,7 @@ export const createKisah = (nama, judul, kisah) => {
         if (getState().kisahListSaya.list.length < 1) {
           kisahListSayaDispatcher(
             dispatch,
+            'createKisah: 3',
             {list: [{
               id: kisahResp.id,
               updatedAt: (new Date()).toUTCString(),
@@ -47,6 +48,7 @@ export const createKisah = (nama, judul, kisah) => {
         } else {
           kisahListSayaDispatcher(
             dispatch,
+            'createKisah: 4',
             {list: [{
               id: kisahResp.id,
               updatedAt: (new Date()).toUTCString(),
@@ -68,13 +70,13 @@ export const listKisahSayaDown = (
   excludedId = ''
 ) => {
   return () => async (dispatch, getState, {api}) => {
-    kisahListSayaDispatcher(dispatch, {loadingBottom: true})
+    kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 1', {loadingBottom: true})
 
     let kisahFetchArr = await tokenizer(api.listKisahSaya)({updatedAt, limit, isAfter: false})
     kisahFetchArr = kisahFetchArr.filter(kisah => kisah.id !== excludedId)
     kisahFetchArr.sort((a, b) => b.updatedAt > a.updatedAt)
 
-    kisahListSayaDispatcher(dispatch, {
+    kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 2', {
       list: getState().kisahListSaya.list.concat(kisahFetchArr),
       loadingBottom: false
     })
