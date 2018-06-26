@@ -70,10 +70,14 @@ export const listKisahSayaDown = (
   excludedId = ''
 ) => {
   return () => async (dispatch, getState, {api}) => {
+    if (getState().kisahListSaya.loadingBottom) return
+
     kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 1', {loadingBottom: true})
 
     let kisahFetchArr = await tokenizer(api.listKisahSaya)({updatedAt, limit, isAfter: false})
-    kisahFetchArr = kisahFetchArr.filter(kisah => kisah.id !== excludedId)
+    if (excludedId !== '') {
+      kisahFetchArr = kisahFetchArr.filter(kisah => kisah.id !== excludedId)
+    }
     kisahFetchArr.sort((a, b) => b.updatedAt > a.updatedAt)
 
     kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 2', {
