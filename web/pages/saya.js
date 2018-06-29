@@ -22,7 +22,9 @@ export default withRouter(Saya)
 
 class SayaComponent extends PureComponent {
   componentDidMount () {
-    this.props.listKisahSayaDown(undefined, 10)
+    if (this.props.kisahList.length < 1) {
+      this.props.listKisahSayaDown(undefined, 10)
+    }
   }
 
   render () {
