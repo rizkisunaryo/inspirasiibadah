@@ -45,10 +45,10 @@ app.get('/token', async(req, res) => {
   }
 
   const token = jwt.sign(
-    {id, nama: id},
+    {id},
     process.env.INSPIRASI_IBADAH_TOKEN_KEY
   );
-  res.json({nama: id, token});
+  res.json({id, nama: id, token});
 });
 
 app.post('/kisah', async(req, res) => {
@@ -104,7 +104,7 @@ app.get('/kisah/saya', async(req, res) => {
   }
 });
 
-app.get('/user/nama', async(req, res) => {
+app.get('/user', async(req, res) => {
   const token = req.get('token');
 
   let userReq = verifyToken(res, token);
@@ -113,7 +113,7 @@ app.get('/user/nama', async(req, res) => {
   try {
     const userDb = await dbGet('User', userReq.id);
     const nama = userDb.nama ? userDb.nama : userDb.id;
-    res.json({nama});
+    res.json({id: userDb.id, nama});
   } catch (error) {
     console.log('Error when getting User by token: ', token);
     res.status(500).json({error: 'Error when getting User'});

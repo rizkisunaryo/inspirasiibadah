@@ -48,8 +48,8 @@ const generateNamaAndToken = () => {
   return fetch(BACKEND_URL + '/token').then(resp => resp.json())
 }
 
-const getNama = token => {
-  return fetch(BACKEND_URL + '/user/nama', {headers: {token}}).then(resp => resp.json())
+const getUser = token => {
+  return fetch(BACKEND_URL + '/user', {headers: {token}}).then(resp => resp.json())
 }
 
 const listKisahSaya = token => paramObj => {
@@ -62,6 +62,6 @@ export default {
   checkLogin: async () => new Promise(resolve => checkLoginFunction(resolve)),
   createKisah,
   generateNamaAndToken,
-  getNama,
+  getUser,
   listKisahSaya
 }

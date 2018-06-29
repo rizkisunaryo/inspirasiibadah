@@ -18,9 +18,9 @@ export const initUser = () => {
       }
     } else if (nama === '' || token === '') {
       token = getCookie('token')
-      const user = await api.getNama(token)
+      const user = await api.getUser(token)
       setCookieForAYear('token', token)
-      userDispatcher(dispatch, 'initUser: 2', {nama: user.nama, token})
+      userDispatcher(dispatch, 'initUser: 2', {id: user.id, nama: user.nama, token})
     }
   }
 }
