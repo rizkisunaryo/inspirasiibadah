@@ -1,4 +1,5 @@
-import Router from 'next/router'
+import lodashGet from 'lodash/get'
+import { Router } from '../routes'
 
 import {dispatcher} from '../../utils/dist/ActionUtils'
 import {ERROR_KISAH_30_CHARACTERS} from '../../utils/dist/constants/Errors'
@@ -6,8 +7,8 @@ import {errorAction, statusDispatcher, successAction} from '../actions/statusAct
 import {tokenizer} from '../utils/TokenUtil'
 import {userDispatcher} from '../actions/userActions'
 
-export const kisahListSayaDispatcher = (dispatch, actionName, newStatusState) => {
-  dispatcher(dispatch, actionName, 'kisahListSaya', newStatusState)
+export const kisahListPenulisDispatcher = (dispatch, actionName, penulisId, newStatusState) => {
+  dispatcher(dispatch, actionName, `kisahListPenulis${penulisId}`, newStatusState)
 }
 
 export const createKisah = (nama, judul, kisah) => {
@@ -20,8 +21,8 @@ export const createKisah = (nama, judul, kisah) => {
 
       statusDispatcher(dispatch, 'createKisah: 1', {loading: true})
 
-      const stateNama = getState().user.nama
-      if (nama && nama !== stateNama) {
+      const stateUser = getState().user
+      if (nama && nama !== stateUser.nama) {
         tokenizer(api.changeNama)(nama)
         userDispatcher(dispatch, 'createKisah: 2', {nama})
       }
@@ -31,30 +32,41 @@ export const createKisah = (nama, judul, kisah) => {
         await errorAction(kisahResp.error)()(dispatch)
       } else {
         await successAction()()(dispatch)
-        Router.push('/saya')
+        Router.pushRoute('penulis', {penulisId: stateUser.id})
 
-        if (getState().kisahListSaya.list.length < 1) {
-          kisahListSayaDispatcher(
+        if (lodashGet(getState(), `['kisahListPenulis${stateUser.id}'].list`, []).length < 1) {
+          kisahListPenulisDispatcher(
             dispatch,
             'createKisah: 3',
+            stateUser.id,
             {list: [{
               id: kisahResp.id,
-              updatedAt: (new Date()).toUTCString(),
+              updatedAt: (new Date()).toISOString(),
               judul,
-              kisah
+              kisah,
+              penulisId: stateUser.id,
+              penulisNama: stateUser.nama
             }]}
           )
-          await listKisahSayaDown(undefined, 10, kisahResp.id)()(dispatch, getState, {api})
+          listKisahPenulisAction(
+            stateUser.id,
+            undefined,
+            10,
+            kisahResp.id
+          )()(dispatch, getState, {api})
         } else {
-          kisahListSayaDispatcher(
+          kisahListPenulisDispatcher(
             dispatch,
             'createKisah: 4',
+            stateUser.id,
             {list: [{
               id: kisahResp.id,
-              updatedAt: (new Date()).toUTCString(),
+              updatedAt: (new Date()).toISOString(),
               judul,
-              kisah
-            }].concat(getState().kisahListSaya.list)}
+              kisah,
+              penulisId: stateUser.id,
+              penulisNama: stateUser.nama
+            }].concat(lodashGet(getState(), `['kisahListPenulis${stateUser.id}'].list`, []))}
           )
         }
       }
@@ -64,25 +76,48 @@ export const createKisah = (nama, judul, kisah) => {
   }
 }
 
-export const listKisahSayaDown = (
-  updatedAt = (new Date()).toUTCString(),
-  limit,
+export const listKisahPenulisAction = (
+  penulisId,
+  updatedAt = (new Date()).toISOString(),
+  limit = 10,
   excludedId = ''
 ) => {
   return () => async (dispatch, getState, {api}) => {
-    if (getState().kisahListSaya.loadingBottom) return
+    try {
+      clearOtherKisahPenulis(dispatch, getState, penulisId)
 
-    kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 1', {loadingBottom: true})
+      if (lodashGet(getState(), `['kisahListPenulis${penulisId}'].loadingBottom`, false)) return
 
-    let kisahFetchArr = await tokenizer(api.listKisahSaya)({updatedAt, limit, isAfter: false})
-    if (excludedId !== '') {
-      kisahFetchArr = kisahFetchArr.filter(kisah => kisah.id !== excludedId)
+      kisahListPenulisDispatcher(dispatch, 'listKisahPenulisAction: 1', penulisId, {loadingBottom: true})
+
+      let kisahFetchArr = await api.listKisahPenulis(penulisId, {updatedAt, limit, isAfter: false})
+      if (excludedId !== '') {
+        kisahFetchArr = kisahFetchArr.filter(kisah => kisah.id !== excludedId)
+      }
+      kisahFetchArr.sort((a, b) => b.updatedAt > a.updatedAt)
+
+      kisahListPenulisDispatcher(dispatch, 'listKisahPenulisAction: 2', penulisId, {
+        list: lodashGet(getState(), `['kisahListPenulis${penulisId}'].list`, []).concat(kisahFetchArr),
+        loadingBottom: false
+      })
+    } catch (error) {
+      kisahListPenulisDispatcher(dispatch, 'listKisahPenulisAction: 1', penulisId, {loadingBottom: false})
+      throw error
     }
-    kisahFetchArr.sort((a, b) => b.updatedAt > a.updatedAt)
-
-    kisahListSayaDispatcher(dispatch, 'listKisahSayaDown: 2', {
-      list: getState().kisahListSaya.list.concat(kisahFetchArr),
-      loadingBottom: false
-    })
   }
+}
+
+const clearOtherKisahPenulis = (dispatch, getState, notDeletedPenulisId) => {
+  let kisahPenulisObject = {}
+  const prefix = 'kisahListPenulis'
+  Object.keys(getState()).forEach(stateKey => {
+    if (stateKey.indexOf(prefix) > -1 && stateKey !== prefix + notDeletedPenulisId) {
+      kisahPenulisObject[stateKey] = {}
+    }
+  })
+  dispatch(state => ({
+    ...state,
+    ...kisahPenulisObject,
+    actionName: 'clearOtherKisahPenulis: 1'
+  }))
 }

@@ -33,7 +33,7 @@ app.get('/token', async(req, res) => {
   const id = StringUtils.generateId();
 
   try {
-    const now = (new Date).toUTCString();
+    const now = (new Date).toISOString();
     await save('User', id, {
       createdAt: now,
       updatedAt: now,
@@ -67,7 +67,7 @@ app.post('/kisah', async(req, res) => {
   }
 
   const id = StringUtils.generateId();
-  const now = (new Date).toUTCString();
+  const now = (new Date).toISOString();
   try {
     await save('Kisah', id, {
       penulisId: userReq.id,
@@ -84,19 +84,35 @@ app.post('/kisah', async(req, res) => {
 
   res.json({id});
 });
-app.get('/kisah/saya', async(req, res) => {
-  let userReq = verifyToken(res, req.get('token'));
-  if (!userReq) return;
-
+app.get('/kisah/:penulisId', async(req, res) => {
   try {
+    const isAfter = req.query.isAfter === 'true';
+    const penulisId = req.params.penulisId;
+    const updatedAt = req.query.updatedAt ? req.query.updatedAt
+      : (new Date()).toISOString();
+
     const kisahQuery = datastore.createQuery('Kisah');
-    const ltOrGt = req.query.isAfter === 'true' ? '>=' : '<=';
+    const ltOrGt = isAfter ? '>=' : '<=';
     const filterQuery = kisahQuery
-      .filter('penulisId', userReq.id)
-      .filter('updatedAt', ltOrGt, req.query.updatedAt);
-    const limitQuery = filterQuery.limit(Number(req.query.limit));
-    const results = await datastore.runQuery(limitQuery);
-    res.json(results[0]);
+      .filter('penulisId', penulisId)
+      .filter('updatedAt', ltOrGt, updatedAt);
+    const orderQuery = filterQuery.order('updatedAt', {
+      descending: !isAfter,
+    });
+    const limitQuery = orderQuery.limit(Number(req.query.limit));
+
+    const allResults = await Promise.all([
+      datastore.runQuery(limitQuery),
+      dbGet('User', penulisId),
+    ]);
+    let results = allResults[0][0].map(result => {
+      const penulisNama = allResults[1].nama ? allResults[1].nama
+        : allResults[1].id;
+      result.penulisNama = penulisNama;
+      return result;
+    });
+
+    res.json(results);
   } catch (error) {
     console.log('Error when retrieving Kisah: ', error);
     res.status(500).json({error: 'Error when retrieving Kisah'});
@@ -128,7 +144,7 @@ app.put('/user/nama', async(req, res) => {
     let user = await dbGet('User', userReq.id);
 
     user.nama = req.body.nama;
-    user.updatedAt = (new Date).toUTCString();
+    user.updatedAt = (new Date).toISOString();
 
     await save('User', userReq.id, user);
     res.status(200).json({});

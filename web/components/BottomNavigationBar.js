@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import {PureComponent} from 'react'
+import {connect} from 'react-redux'
 
 import Colors from '../../utils/dist/constants/Colors'
 import MaterialIcon from '../components/MaterialIcon'
+import { Link as RoutesLink } from '../routes'
 
-export default class BottomNavigationBar extends PureComponent {
+class BottomNavigationBar extends PureComponent {
   render () {
     const {
       router: propRouter
@@ -55,16 +57,21 @@ export default class BottomNavigationBar extends PureComponent {
                 label='Tulis' />
             </Link>
           </div>
-          <div style={styles.navigationButtonContainer}>
-            <Link href='/saya'>
-              <MaterialIcon
-                active={propRouter && ['/saya'].indexOf(propRouter.pathname) > -1}
-                type='perm_identity'
-                label='Saya' />
-            </Link>
-          </div>
+          {this.props.userId !== '' &&
+            <div style={styles.navigationButtonContainer}>
+              <RoutesLink route='penulis' params={{penulisId: this.props.userId}}>
+                <MaterialIcon
+                  active={propRouter &&
+                    propRouter.asPath.indexOf(`/penulis/${this.props.userId}`) > -1}
+                  type='perm_identity'
+                  label='Saya' />
+              </RoutesLink>
+            </div>
+          }
         </div>
       </div>
     )
   }
 }
+
+export default connect(state => ({userId: state.user.id}), {})(BottomNavigationBar)

@@ -52,8 +52,8 @@ const getUser = token => {
   return fetch(BACKEND_URL + '/user', {headers: {token}}).then(resp => resp.json())
 }
 
-const listKisahSaya = token => paramObj => {
-  return fetch(BACKEND_URL + '/kisah/saya' + generateUrlQuery(paramObj), {headers: {token}})
+const listKisahPenulis = (penulisId, paramObj) => {
+  return fetch(BACKEND_URL + `/kisah/${penulisId}` + generateUrlQuery(paramObj))
     .then(resp => resp.json())
 }
 
@@ -63,5 +63,5 @@ export default {
   createKisah,
   generateNamaAndToken,
   getUser,
-  listKisahSaya
+  listKisahPenulis
 }

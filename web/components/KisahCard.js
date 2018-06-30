@@ -6,7 +6,7 @@ import {gmtToIndonesia} from '../../utils/dist/DateUtils'
 export default class KisahCard extends PureComponent {
   render () {
     const {
-      nama,
+      penulisNama,
       updatedAt,
       judul,
       kisah
@@ -26,7 +26,7 @@ export default class KisahCard extends PureComponent {
       >
         <div style={{marginBottom: 7}}>
           <div style={{color: Colors.BLUE_500, marginBottom: 3}}>
-            {nama}
+            {penulisNama}
           </div>
           <div style={{fontSize: 12}}>{gmtToIndonesia(updatedAt)}</div>
         </div>
